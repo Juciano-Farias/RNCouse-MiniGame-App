@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect, useMemo } from "react"
 
 import { StyleSheet, Text, View, Alert } from "react-native"
 
@@ -9,7 +9,7 @@ import NumberContainer from '../components/game/NumberContainer'
 let minBoudary = 1;
 let maxBoudary = 100;
 
-const GameScreen = ({ userNumber }) => {
+const GameScreen = ({ userNumber, onGameOver }) => {
     
     const generateRandomNumber = (min, max, exclude) => {
         const rndNum = Math.floor(Math.random() * (max -min)) + min
@@ -35,9 +35,17 @@ const GameScreen = ({ userNumber }) => {
         setCurrentGuess(newRandomNumber)
     }
     
-    const initialGuess = generateRandomNumber(minBoudary, maxBoudary, userNumber)
+    const initialGuess = useMemo(() => {
+        return generateRandomNumber(minBoudary, maxBoudary, userNumber)
+    }, [userNumber, minBoudary, maxBoudary])
     const [currentGuess, setCurrentGuess] = useState(initialGuess)
     
+    useEffect(() => {
+        if(currentGuess === userNumber){
+            onGameOver()
+        }
+    }, [currentGuess, userNumber, onGameOver])
+
     return (
         <View style={styles.screen}>
             <Title>Oponents Guess</Title>
