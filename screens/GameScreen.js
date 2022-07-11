@@ -1,9 +1,14 @@
 import { useState, useEffect, useMemo } from "react"
 
-import { StyleSheet, Text, View, Alert } from "react-native"
+import { StyleSheet, View, Alert } from "react-native"
+
+import { Ionicons } from '@expo/vector-icons'
 
 import Title from "../components/ui/Title"
 import PrimaryButton from '../components/ui/PrimaryButton'
+import Card from "../components/ui/Card"
+import InstructionText from '../components/ui/InstructionText'
+
 import NumberContainer from '../components/game/NumberContainer'
 
 let minBoudary = 1;
@@ -37,7 +42,7 @@ const GameScreen = ({ userNumber, onGameOver }) => {
     
     const initialGuess = useMemo(() => {
         return generateRandomNumber(minBoudary, maxBoudary, userNumber)
-    }, [userNumber, minBoudary, maxBoudary])
+    }, [userNumber])
     const [currentGuess, setCurrentGuess] = useState(initialGuess)
     
     useEffect(() => {
@@ -50,13 +55,17 @@ const GameScreen = ({ userNumber, onGameOver }) => {
         <View style={styles.screen}>
             <Title>Oponents Guess</Title>
             <NumberContainer>{currentGuess}</NumberContainer>
-            <View>
-                <Text>Higher or Lowers?</Text>
-                <View>
-                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
-                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+            <Card>
+                <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}><Ionicons name="md-remove" size={24} color="white" /></PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}><Ionicons name="md-add" size={24} color="white" /></PrimaryButton>
+                    </View>
                 </View>
-            </View>
+            </Card>
             {/* <Text>LOG ROUNDS</Text> */}
         </View>
     )
@@ -70,4 +79,13 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         paddingVertical: 40,
     },
+    instructionText: {
+        marginBottom: 12,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+    },
+    buttonContainer:{
+        flex: 1,
+    }
 })
