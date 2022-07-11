@@ -1,5 +1,6 @@
-
 import { useState } from 'react';
+import { useFonts } from 'expo-font';
+import * as SplashScreen from 'expo-splash-screen'
 
 import {
   StyleSheet,
@@ -17,6 +18,17 @@ import Color from './constants/colors'
 export default function App() {
   const [userNumber, setUserNumber] = useState()
   const [gameIsOver, setGameIsOver] = useState(true)
+
+  const [fontsLoaded] = useFonts({
+    'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+    'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+  })
+
+  if(!fontsLoaded){
+    SplashScreen.preventAutoHideAsync()
+  } else if(fontsLoaded) {
+    SplashScreen.hideAsync()
+  }
 
   const pickedNumberHandler = (pickedNumber) => {
     setUserNumber(pickedNumber)
