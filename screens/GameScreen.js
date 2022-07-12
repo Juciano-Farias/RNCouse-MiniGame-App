@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from "react"
 
-import { StyleSheet, View, Alert } from "react-native"
+import { StyleSheet, View, Alert, Text, FlatList } from "react-native"
 
 import { Ionicons } from '@expo/vector-icons'
 
@@ -9,6 +9,7 @@ import PrimaryButton from '../components/ui/PrimaryButton'
 import Card from "../components/ui/Card"
 import InstructionText from '../components/ui/InstructionText'
 
+import GuessLogItem from '../components/game/GuessLogItem'
 import NumberContainer from '../components/game/NumberContainer'
 
 let minBoudary = 1;
@@ -38,27 +39,33 @@ const GameScreen = ({ userNumber, onGameOver }) => {
         }
         const newRandomNumber = generateRandomNumber(minBoudary, maxBoudary, currentGuess)
         setCurrentGuess(newRandomNumber)
+        setGuessRounds(prevGuessRounds => [newRandomNumber, ...prevGuessRounds])
     }
+    
     
     const initialGuess = useMemo(() => {
         return generateRandomNumber(minBoudary, maxBoudary, userNumber)
     }, [userNumber])
     const [currentGuess, setCurrentGuess] = useState(initialGuess)
+    const [guessRounds, setGuessRounds] = useState([initialGuess])
+
+    const guessRoundsListLenth = guessRounds.length
     
     useEffect(() => {
         if(currentGuess === userNumber){
-            onGameOver()
+            onGameOver(guessRounds.length)
         }
     }, [currentGuess, userNumber, onGameOver])
-
+    
     useEffect(() => {
         minBoudary = 1;
         maxBoudary = 100;
     },[])
+    
 
     return (
         <View style={styles.screen}>
-            <Title>Oponents Guess</Title>
+            <Title>Oponent's Guess</Title>
             <NumberContainer>{currentGuess}</NumberContainer>
             <Card>
                 <InstructionText style={styles.instructionText}>Higher or Lower?</InstructionText>
@@ -71,7 +78,13 @@ const GameScreen = ({ userNumber, onGameOver }) => {
                     </View>
                 </View>
             </Card>
-            {/* <Text>LOG ROUNDS</Text> */}
+            <View style={styles.listContainer}>
+                <FlatList 
+                    data={guessRounds}
+                    renderItem={({ item, index }) => <GuessLogItem roundsNumber={guessRoundsListLenth - index} guess={item}/>}
+                    keyExtractor={(item) => item}
+                />
+            </View>
         </View>
     )
 }
@@ -91,6 +104,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     buttonContainer:{
+        flex: 1,
+    },
+    listContainer: {
         flex: 1,
     }
 })
