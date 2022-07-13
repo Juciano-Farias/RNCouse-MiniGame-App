@@ -10,6 +10,8 @@ export default Title
 
 const styles = StyleSheet.create({
     title: {
+        width: 300,
+        maxWidth: '80%',
         fontFamily: 'open-sans-bold',
         padding: 12,
         fontSize: 24,
