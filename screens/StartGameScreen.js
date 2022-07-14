@@ -4,7 +4,6 @@ import {
     ,View,
     TextInput,
     Alert,
-    Dimensions,
     useWindowDimensions,
     KeyboardAvoidingView,
     ScrollView,
@@ -20,7 +19,7 @@ import Card from '../components/ui/Card'
 const StartGameScreen = ({ onPickNumber }) => {
     const [enteredNumber, setEnteredNumber] = useState('')
 
-    const { width, height } = useWindowDimensions()
+    const { height } = useWindowDimensions()
 
     const numberInputHandler = (enteredText) => {
         setEnteredNumber(enteredText)
@@ -80,15 +79,12 @@ const StartGameScreen = ({ onPickNumber }) => {
 
 export default StartGameScreen
 
- // const diveceHeight = Dimensions.get('window').height
-
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
     },
     rootContainer: {
         flex: 1,
-        // marginTop: diveceHeight < 380 ? 30 : 70,
         alignItems: 'center',
     },
     numberInput: {
