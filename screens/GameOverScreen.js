@@ -1,7 +1,7 @@
-import { useWindowDimensions, Image, StyleSheet, Text, View, ScrollView} from 'react-native'
+import { useWindowDimensions, Image, StyleSheet, Text, View} from 'react-native'
 import PrimaryButton from '../components/ui/PrimaryButton'
 
-import Title from '../components/ui/Title'
+import Title from '../components/ui/Title.ios'
 
 import Color from '../constants/colors'
 
@@ -40,6 +40,9 @@ const GameOverScreen = ({ roundsNumber, userNumber, onStartNewGame }) => {
 export default GameOverScreen
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   rootContainer: {
     flex: 1,
     padding: 24,
